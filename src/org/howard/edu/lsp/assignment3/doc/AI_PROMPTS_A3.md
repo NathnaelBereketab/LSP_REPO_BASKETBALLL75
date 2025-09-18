@@ -1,0 +1,29 @@
+CSCI 363 – Assignment 3: AI Usage Documentation
+
+AI Usage: Claude 4
+- Summary: I used AI assistance to help implement portions of my object-oriented design ideas and refine the redesign process from Assignment 2 to Assignment 3. I brainstormed my redesign using OO concepts and class structure, and used AI to help with implementation details and best practices.
+
+- Prompt used:
+  - Prompt: "I have a Java ETL pipeline with a single class containing static methods for extract, transform, and load operations. The current structure has inner classes for Product and ExtractStats. How can I redesign this to be more object-oriented with better separation of concerns, encapsulation, and potentially inheritance/polymorphism?"
+  - AI response (excerpt): "Here are several object-oriented design improvements you can make: 1. Separate Classes by Responsibility: Product - Standalone class with proper encapsulation, CSVExtractor - Handles file reading and parsing, ProductTransformer - Manages transformation logic, CSVLoader - Handles file writing, ETLPipeline - Orchestrates the process. 2. Use Inheritance/Polymorphism: Create TransformationRule interface, Implement specific rules: UppercaseRule, DiscountRule, RecategorizationRule, PriceRangeRule. 3. Encapsulation: Hide implementation details in each class, Use private fields with getters/setters where appropriate, Make classes responsible for their own data validation."
+  - How it was used: I recognized the need for separate classes and encapsulation. The AI response provided implementation guidance for inheritance and polymorphism concepts I thought of. I utilized the suggestions by choosing a simpler 4-class approach (BaseProduct, Product, ETLProcessor, ETLPipeline) instead of the more complex 10-class design suggested.
+
+- Prompt used:
+  - Prompt: "What object-oriented principles would be best demonstrated in an ETL pipeline redesign, and how would I implement them while maintaining the exact same functionality?"
+  - AI response (excerpt): "Here's how to demonstrate these OO principle: Inheritance: TransformationRule abstract class or interface, UppercaseTransformation, DiscountTransformation, RecategorizationTransformation extend it, Common behavior in base class, specific logic in subclasses. Polymorphism: Process transformations through TransformationRule interface, Same method call, different behavior based on actual type, Easy to add new transformation types without changing existing code."
+  - How it was used: I already knew I wanted to demonstrate encapsulation and composition. This response helped me refine my implementation approach for each OO principle. I focused on my planned encapsulation (Product class with private fields) and composition (ETLPipeline using ETLProcessor) while keeping the design simple and maintainable.
+
+- Prompt used:
+  - Prompt: "How can I make sure the object-oriented redesign produces identical outputs to the original while demonstrating good OO design principles?"
+  - AI response (excerpt): "To maintain identical functionality: 1. Preserve Transform Order: Use a list of transformation rules executed in sequence. 2. Same Error Handling: Each class should handle errors the same way. 3. Identical Rounding: Use the same Math.round() logic. 4. Same File Paths: Keep relative paths in the orchestrator class. 5. Testing Strategy: Create test cases for each transformation rule, Compare outputs byte-for-byte with original, Test edge cases (empty file, missing file, malformed data)."
+  - How it was used: I was planning to maintain the same functionality but needed guidance on the best practices. This response provided implementation details for maintaining identical functionality. I implemented the same transformation order I had planned, used identical rounding logic (Math.round(value * 100.0) / 100.0), and tested to make sure byte-for-byte identical outputs between Assignment 2 and Assignment 3.
+
+- Prompt used:
+  - Prompt: "I want to implement proper encapsulation with private fields and getters/setters in my Product class. What's the best way to handle the inheritance hierarchy with BaseProduct abstract class while maintaining clean encapsulation?"
+  - AI response (excerpt): "For proper encapsulation in inheritance: 1. Make fields private in both base and derived classes, 2. Use protected setters in base class for constructor initialization, 3. Provide public getters for controlled access, 4. Use getter methods in derived class methods instead of direct field access, 5. Consider making BaseProduct fields private with protected setters to avoid encapsulation leaks."
+  - How it was used: I needed help with the encapsulation implementation details. This response helped me implement proper private fields in BaseProduct with protected setters, and ensured I used getter methods in Product class methods instead of direct field access.
+
+- Prompt used:
+  - Prompt: "I need to make sure my ETLProcessor actively uses polymorphism by calling the computePriceRange() method from the Product object. How should I structure this to demonstrate polymorphism in practice rather than just having the method exist?"
+  - AI response (excerpt): "To demonstrate active polymorphism: 1. Call the abstract method on the base class reference, 2. Use product.computePriceRange() instead of a separate utility method, 3. Remove any static determinePriceRange() methods, 4. Ensure the polymorphic call happens during the transformation process, 5. This shows the same method call can have different implementations based on the actual object type."
+  - How it was used: I had designed the abstract method structure but needed guidance on making it actively used in the ETL flow. This response helped me remove the separate utility method and update the transformation logic to call product.computePriceRange() directly.
