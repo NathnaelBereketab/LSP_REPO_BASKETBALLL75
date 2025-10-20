@@ -1,4 +1,5 @@
 Question 4 Rationale:
+Smart Campus Device System - Inheritance and Interface Implementation Analysis
 
 1. Why is Device defined as an abstract class?
 Device is defined as an abstract class because it provides common functionality (id, location, heartbeat, connection status) that all smart campus devices share, while requiring each concrete device to implement its own specific getStatus() method. This follows the template method pattern where common behavior is defined in the abstract class, but specific behavior is left to subclasses.

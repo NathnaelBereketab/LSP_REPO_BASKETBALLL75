@@ -1,5 +1,9 @@
 package org.howard.edu.lsp.midterm.question4;
 
+/**
+ * Main driver class - Smart Campus Device System
+ * Demonstrates inheritance, interfaces, and polymorphism
+ */
 import java.util.*;
 
 public class Main {
