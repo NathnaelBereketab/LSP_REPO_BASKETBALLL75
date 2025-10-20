@@ -1,0 +1,10 @@
+Question 4 Rationale:
+
+1. Why is Device defined as an abstract class?
+Device is defined as an abstract class because it provides common functionality (id, location, heartbeat, connection status) that all smart campus devices share, while requiring each concrete device to implement its own specific getStatus() method. This follows the template method pattern where common behavior is defined in the abstract class, but specific behavior is left to subclasses.
+
+2. How do the Networked and BatteryPowered interfaces add behavior to your concrete classes?
+The Networked and BatteryPowered interfaces add specific capabilities to devices through interface implementation. Networked devices can connect/disconnect and report connection status, while BatteryPowered devices can manage battery levels. This allows for flexible composition where devices can have different combinations of capabilities (DoorLock and Camera have both, Thermostat only has Networked).
+
+3. Is this design an example of multiple inheritance in Java? Explain why or why not.
+No, this is not multiple inheritance. Java only supports single inheritance for classes (Device is the only parent class), but it supports multiple interface implementation. The concrete classes extend one abstract class (Device) and implement multiple interfaces (Networked, BatteryPowered). This is interface-based composition, not multiple inheritance, which allows for flexible behavior without the complexity of true multiple inheritance.
