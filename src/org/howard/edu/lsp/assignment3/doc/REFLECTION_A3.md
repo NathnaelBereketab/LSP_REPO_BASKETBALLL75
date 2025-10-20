@@ -1,6 +1,6 @@
 CSCI 363 – Assignment 3: Object-Oriented Redesign Reflection
 
-Overview
+Overview:
 This reflection compares the Assignment 2 and Assignment 3 implementations of the ETL pipeline and how Assignment 3 demonstrates object-oriented principles.
 
 What is Different About the Design?
