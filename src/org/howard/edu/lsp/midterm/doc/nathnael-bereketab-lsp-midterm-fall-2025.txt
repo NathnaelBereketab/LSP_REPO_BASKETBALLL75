@@ -129,14 +129,35 @@ Using one or more Arthur Riel heuristics, analyze whether the StudentPortalHelpe
 a) Should a well-designed class have high or low cohesion?  Explain and defend your answer.  (5 pts.)
 
 
-A well-designed class should have high cohesion. High cohesion means that everything inside a class—its methods and data—works together toward one clear purpose. According to Arthur Riel's heuristics, especially the idea that "a class should capture one and only one key abstraction," high cohesion makes classes much easier to understand, maintain, test, and reuse. When a class has high cohesion, making changes to one part of the system won't force you to modify a bunch of unrelated code elsewhere. On the flip side, low cohesion is a red flag that a class is juggling too many unrelated responsibilities, which breaks the Single Responsibility Principle and makes the code messier and more bug-prone.
+A well-designed class should have high cohesion. High cohesion means that everything inside a class—its methods and data—works
+together toward one clear purpose. According to Arthur Riel's heuristics, especially the idea that "a class should capture one and only one key abstraction,"
+high cohesion makes classes much easier to understand, maintain, test, and reuse. When a class has high cohesion,
+making changes to one part of the system won't force you to modify a bunch of unrelated code elsewhere. 
+On the flip side, low cohesion is a red flag that a class is juggling too many unrelated responsibilities, which breaks the Single Responsibility Principle and makes the code messier and more bug-prone.
 
 b) Based on your analysis, discuss-only if you believe changes are needed-how you would reorganize or redesign the class to improve its structure. Your answer should (1) identify the class as having high, low or perfect cohesion and (2) describe a general approach to refactoring the class.  If you believe the class already has good cohesion, justify why no changes are necessary. (15 pts)
 (If you believe the class already has good cohesion, justify why no changes are necessary.)
 
-The StudentPortalHelper class demonstrates low cohesion. Looking at Arthur Riel's heuristics, particularly "a class should capture one and only one key abstraction" and "most methods should be using most of the data members most of the time," it's clear this class breaks both rules. The class is trying to do way too much at once—it handles academic calculations like GPA computation, file operations for CSV exports, email formatting for welcome messages, UI date formatting, payment processing for tuition, password security checks, and even some basic caching. These methods don't share any common data (except for the cache, which only two methods actually use), and they all serve completely different purposes. This is a textbook "utility class" or "God class" that's become a catch-all for random functionality that didn't have anywhere else to go.
+The StudentPortalHelper class demonstrates low cohesion. Looking at Arthur Riel's heuristics, particularly "a class should capture one 
+and only one key abstraction" and "most methods should be using most of the data members most of the time," it's clear
+this class breaks both rules. The class is trying to do way too much at once—it handles academic calculations like GPA computation, 
+file operations for CSV exports, email formatting for welcome messages, UI date formatting, payment processing for tuition, 
+password security checks, and even some basic caching. These methods don't share any common data (except for the cache, which only two methods actually use),
+and they all serve completely different purposes. This is a textbook "utility class" or "God class" that's become a 
+catch-all for random functionality that didn't have anywhere else to go.
 
-To fix this, I'd break this single class into several smaller, focused classes, each with one clear job. First, I'd create a GradeCalculator class to handle anything related to GPA and grade calculations. Second, a RosterExporter would take care of CSV exports and file operations for student rosters. Third, an EmailService would handle all the email formatting and message generation. Fourth, a DateFormatter would manage date formatting for the UI. Fifth, a PaymentProcessor would deal with tuition payments. Sixth, a PasswordValidator would handle password strength checks and other security validations. Finally, a CacheManager would provide proper caching with all the standard operations instead of just two basic methods. Each of these new classes would have high cohesion because everything inside would work together toward one goal. For instance, the GradeCalculator could eventually grow to include semester GPA, cumulative GPA, grade distributions, and other academic metrics—all related to student performance. The CacheManager could become a real caching solution with put, get, clear, size, and other standard cache operations instead of the bare-bones setup we have now. This refactoring would make the code much easier to maintain, test, and extend since each class would have one clear responsibility and everything inside would actually belong together.
+To fix this, I'd break this single class into several smaller, focused classes, each with one clear job. 
+First, I'd create a GradeCalculator class to handle anything related to GPA and grade calculations. 
+Second, a RosterExporter would take care of CSV exports and file operations for student rosters. 
+Third, an EmailService would handle all the email formatting and message generation. Fourth, a DateFormatter would manage date formatting for the UI.
+Fifth, a PaymentProcessor would deal with tuition payments. Sixth, a PasswordValidator would
+handle password strength checks and other security validations. Finally, a CacheManager would provide proper 
+caching with all the standard operations instead of just two basic methods. Each of these new classes would have high
+cohesion because everything inside would work together toward one goal. For instance, the GradeCalculator could
+eventually grow to include semester GPA, cumulative GPA, grade distributions, and other academic metrics—all 
+related to student performance. The CacheManager could become a real caching solution with put, get, clear, size, 
+and other standard cache operations instead of the bare-bones setup we have now. This refactoring would make 
+the code much easier to maintain, test, and extend since each class would have one clear responsibility and everything inside would actually belong together.
 
 Question 2. (20 pts.)
 
@@ -195,11 +216,6 @@ Given the following, answer the below questions.
         
 Given:    
 A car manufacturer uses Java software to track current vehicles being built. The UML diagram below shows an excerpt of the current software structure. You should assume the presence of other appropriate fields and methods
-
-
-
-
-
 
 
 
