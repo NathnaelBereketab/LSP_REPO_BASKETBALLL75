@@ -1,0 +1,56 @@
+================================================================================
+INTERNET RESOURCES CONSULTED:
+================================================================================
+
+1. Java Documentation - Math.PI
+   URL: https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html#PI
+   Date Accessed: October 20, 2025
+
+2. Java Documentation - IllegalArgumentException
+   URL: https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html
+   Date Accessed: October 20, 2025
+
+3. Java Method Overloading Tutorial
+   URL: https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html
+   Date Accessed: October 20, 2025
+
+================================================================================
+AI-GENERATED CONTENT - FULL TRANSCRIPT:
+================================================================================
+
+Me: "Can you help me verify my AreaCalculator formulas? I want to make sure 
+my circle area calculation using Math.PI * radius * radius is correct."
+
+AI: "Yes, that formula is correct. For a circle, area = π × r². Your 
+implementation using Math.PI * radius * radius follows the standard formula. 
+Make sure to handle the IllegalArgumentException for radius ≤ 0."
+
+Me: "I'm working on the AreaCalculator Main class. Can you help me format 
+the output to match exactly what's required? I need the exact string format for 
+the circle, rectangle, triangle, and square outputs."
+
+AI: "Make sure your output strings match exactly: 'Circle radius 3.0 → area = ' 
++ result, 'Rectangle 5.0 x 2.0 → area = ' + result, etc. The arrow symbol (→) 
+and spacing are important for the exact format."
+
+Me: "For method overloading, should I explain why it's better than using 
+different method names like rectangleArea, circleArea, etc.?"
+
+AI: "Yes, explain that method overloading provides a cleaner, more intuitive API. 
+Users can call area() with different parameters and the compiler automatically 
+selects the correct method based on parameter types. This follows polymorphism 
+principles and improves maintainability."
+
+Me: "What's the difference between the triangle method signature using int 
+parameters versus the rectangle using double parameters?"
+
+AI: "The triangle method uses int base and int height, while rectangle uses 
+double width and double height. This creates different method signatures, 
+allowing overloading to work. The return type is double for triangle to handle 
+the 0.5 multiplication result correctly."
+
+Me: "Should I throw exceptions before or after checking the parameter values?"
+
+AI: "Check the parameter values first using if statements, then throw the 
+IllegalArgumentException if any dimension is <= 0. Make sure to include a 
+descriptive message with the exception."
