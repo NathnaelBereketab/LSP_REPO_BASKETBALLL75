@@ -129,34 +129,14 @@ Using one or more Arthur Riel heuristics, analyze whether the StudentPortalHelpe
 a) Should a well-designed class have high or low cohesion?  Explain and defend your answer.  (5 pts.)
 
 
-**A well-designed class should have high cohesion.** 
-High cohesion means that all methods and data within a class are closely related and work together toward a single, well-defined purpose. 
-According to Arthur Riel's heuristics, particularly "A class should capture one and only one key abstraction," high cohesion leads to classes that are easier to understand, maintain, test, and reuse. 
-When a class has high cohesion, changes to one part of the system are less likely to require changes across multiple unrelated areas. 
-Low cohesion, in contrast, indicates that a class is trying to do too many unrelated things, which violates the Single Responsibility Principle and makes the code harder to maintain and more prone to bugs.
-
-
+A well-designed class should have high cohesion. High cohesion means that everything inside a class—its methods and data—works together toward one clear purpose. According to Arthur Riel's heuristics, especially the idea that "a class should capture one and only one key abstraction," high cohesion makes classes much easier to understand, maintain, test, and reuse. When a class has high cohesion, making changes to one part of the system won't force you to modify a bunch of unrelated code elsewhere. On the flip side, low cohesion is a red flag that a class is juggling too many unrelated responsibilities, which breaks the Single Responsibility Principle and makes the code messier and more bug-prone.
 
 b) Based on your analysis, discuss-only if you believe changes are needed-how you would reorganize or redesign the class to improve its structure. Your answer should (1) identify the class as having high, low or perfect cohesion and (2) describe a general approach to refactoring the class.  If you believe the class already has good cohesion, justify why no changes are necessary. (15 pts)
 (If you believe the class already has good cohesion, justify why no changes are necessary.)
-**The StudentPortalHelper class demonstrates low cohesion.** 
-Using Arthur Riel's heuristics, specifically "A class should capture one and only one key abstraction" and "Most of the methods defined on a class should be using most of the data members most of the time," we can see that this class violates these principles. 
-The class attempts to handle multiple unrelated responsibilities including academic calculations (GPA computation), file I/O operations (CSV export), email formatting (welcome messages), UI concerns (date formatting), payment processing (tuition payments), security validation (password strength), and caching infrastructure (ad-hoc cache management). 
-These methods share no common data, with the cache being used by only two methods, and they operate independently while serving completely different purposes. 
-This is a classic example of a "utility class" or "God class" that has become a dumping ground for miscellaneous functionality. 
 
-**To improve cohesion, I would decompose this single class into multiple focused classes, each with a single, clear responsibility.** 
-First, I would create a GradeCalculator class to handle GPA computation and grade-related calculations. 
-Second, a RosterExporter class would manage CSV export and file operations for student rosters. 
-Third, an EmailService class would handle email formatting and message generation. 
-Fourth, a DateFormatter class would manage date formatting for UI display. 
-Fifth, a PaymentProcessor class would handle tuition payment processing. 
-Sixth, a PasswordValidator class would manage password strength validation and security checks. 
-Finally, a CacheManager class would provide caching infrastructure with proper cache operations. 
-Each of these classes would have high cohesion because all methods within each class would work with related data and serve a unified purpose. 
-For example, GradeCalculator might eventually include methods for calculating semester GPA, cumulative GPA, grade distributions, and other metrics all related to academic performance. 
-The CacheManager could be implemented as a proper generic cache with methods for put, get, clear, size, and other cache operations, rather than the current ad-hoc two-method approach. 
-This refactoring would make the codebase more maintainable, testable, and extensible, as each class would have a clear single responsibility and high internal cohesion.
+The StudentPortalHelper class demonstrates low cohesion. Looking at Arthur Riel's heuristics, particularly "a class should capture one and only one key abstraction" and "most methods should be using most of the data members most of the time," it's clear this class breaks both rules. The class is trying to do way too much at once—it handles academic calculations like GPA computation, file operations for CSV exports, email formatting for welcome messages, UI date formatting, payment processing for tuition, password security checks, and even some basic caching. These methods don't share any common data (except for the cache, which only two methods actually use), and they all serve completely different purposes. This is a textbook "utility class" or "God class" that's become a catch-all for random functionality that didn't have anywhere else to go.
+
+To fix this, I'd break this single class into several smaller, focused classes, each with one clear job. First, I'd create a GradeCalculator class to handle anything related to GPA and grade calculations. Second, a RosterExporter would take care of CSV exports and file operations for student rosters. Third, an EmailService would handle all the email formatting and message generation. Fourth, a DateFormatter would manage date formatting for the UI. Fifth, a PaymentProcessor would deal with tuition payments. Sixth, a PasswordValidator would handle password strength checks and other security validations. Finally, a CacheManager would provide proper caching with all the standard operations instead of just two basic methods. Each of these new classes would have high cohesion because everything inside would work together toward one goal. For instance, the GradeCalculator could eventually grow to include semester GPA, cumulative GPA, grade distributions, and other academic metrics—all related to student performance. The CacheManager could become a real caching solution with put, get, clear, size, and other standard cache operations instead of the bare-bones setup we have now. This refactoring would make the code much easier to maintain, test, and extend since each class would have one clear responsibility and everything inside would actually belong together.
 
 Question 2. (20 pts.)
 
@@ -228,30 +208,17 @@ Each car can be built to one of three trim levels: Base, Luxury or Sport. They c
 Task:
 a) Explain in detail why the current structure does or does not support this. (10 pts.)
 
-**The current structure does not support dynamic trim-level changes during the manufacturing process.** 
-This design uses class inheritance to represent trim levels (Base, Sports, Luxury), which means the trim level is determined at compile-time when a car object is instantiated as a specific subclass (e.g., new Sports() or new Luxury()). 
-Once a car object is created as an instance of a particular trim class, its type is fixed and cannot be changed at runtime. 
-If a customer wants to switch from a Base trim to a Luxury trim during manufacturing, the current system would require creating an entirely new object of the Luxury class and somehow transferring all the state information from the old Base object to the new one, which is cumbersome, error-prone, and defeats the purpose of tracking a single vehicle throughout its manufacturing lifecycle. 
+The current structure does not support dynamic trim-level changes during the manufacturing process.
+This design uses class inheritance to represent trim levels (Base, Sports, Luxury), which locks in the trim level at compile-time when you create a car object as a specific subclass (like new Sports() or new Luxury()). Once you've created a car as a particular trim class, that's it—its type is fixed and can't be changed at runtime. If a customer decides mid-manufacturing that they want to upgrade from Base to Luxury, the system would have to create a completely new Luxury object and copy over all the information from the old Base object. This is messy, error-prone, and completely defeats the point of tracking one vehicle through its entire manufacturing journey.
 
-Furthermore, the inheritance hierarchy creates a rigid, inflexible structure. 
-The trim level is encoded into the class identity itself through the "is-a" relationship, meaning a Base car "is-a" Car, and it will always be a Base car. 
-Java does not support changing an object's class at runtime, so there is no way to convert a Base instance into a Sports or Luxury instance without creating a new object entirely. 
-This violates the principle that behavior should be changeable without changing identity. 
-Additionally, if the system also needs to support engine type changes (Electric vs Petrol), the current parallel inheritance hierarchies would create a combinatorial explosion problem where you'd need separate classes for every combination (BaseElectric, BasePetrol, SportsElectric, SportsPetrol, LuxuryElectric, LuxuryPetrol), making the design unmaintainable and violating the Open/Closed Principle.
+The inheritance hierarchy makes things even more rigid. The trim level is baked into the class identity itself through the "is-a" relationship—a Base car "is-a" Car, and it will always be a Base car. Java doesn't let you change an object's class at runtime, so there's no way to turn a Base instance into a Sports or Luxury instance without creating a whole new object. This breaks the basic principle that you should be able to change behavior without changing identity.
+Even worse, if the system needs to handle engine type changes too (Electric vs Petrol), the parallel inheritance hierarchies would explode into a nightmare. You'd need separate classes for every possible combination—BaseElectric, BasePetrol, SportsElectric, SportsPetrol, LuxuryElectric, LuxuryPetrol—making the design impossible to maintain and violating the Open/Closed Principle.
 
 b) Describe how to refactor the structure to allow trim-level change for a car to dynamically change.  Hint: How would you modify Car to use composition to solve the problem? (10 pts.)
 
-**To refactor this structure and support dynamic trim-level changes, I would replace the inheritance-based approach with a composition-based design using the Strategy pattern.** 
-Instead of having Base, Sports, and Luxury as subclasses of Car, I would create a TrimLevel interface (or abstract class) that defines the behavior associated with trim levels, such as getFeatures(), getPrice(), or other trim-specific operations. 
-Then, I would create concrete implementations of this interface: BaseTrim, SportsTrim, and LuxuryTrim. 
-The Car class would have a private instance variable of type TrimLevel (e.g., private TrimLevel trimLevel;) and a setter method setTrimLevel(TrimLevel newTrim) that allows the trim level to be changed at runtime. 
+To refactor this structure and support dynamic trim-level changes, I would replace the inheritance-based approach with a composition-based design using the Strategy pattern. Instead of making Base, Sports, and Luxury subclasses of Car, I'd create a TrimLevel interface (or abstract class) that defines what trim levels can do—things like getFeatures(), getPrice(), and other trim-specific operations. Then I'd make concrete implementations: BaseTrim, SportsTrim, and LuxuryTrim. The Car class would have a private TrimLevel instance variable (like private TrimLevel trimLevel;) and a setter method setTrimLevel(TrimLevel newTrim) that lets you swap out the trim level whenever you want at runtime.
 
-Similarly, for the engine type, I would create an Engine interface with concrete implementations ElectricEngine and PetrolEngine, and the Car class would contain a private Engine instance variable with an appropriate setter method. 
-The Car class would then delegate trim-specific and engine-specific behavior to these composed objects. 
-For example, the getTrimLevel() method in Car might return trimLevel.getName(), and engine-related methods would delegate to the engine object. 
-This composition-based approach follows the principle of "favor composition over inheritance" and provides the flexibility to change both trim level and engine type dynamically during the manufacturing process. 
-When a customer requests a trim change, the system simply calls car.setTrimLevel(new LuxuryTrim()) without creating a new Car object, preserving the car's identity and all its other state information throughout the manufacturing lifecycle. 
-This design is more maintainable, extensible, and adheres to SOLID principles, particularly the Open/Closed Principle, as new trim levels or engine types can be added without modifying existing code.
+I'd do the same thing for engine types. Create an Engine interface with concrete implementations like ElectricEngine and PetrolEngine, and give the Car class a private Engine instance variable with its own setter method. The Car class would then hand off trim-specific and engine-specific behavior to these composed objects. For example, if you call getTrimLevel() on a Car, it might just return trimLevel.getName(), and any engine-related methods would delegate to the engine object. This composition approach follows the classic principle of "favor composition over inheritance" and gives you the flexibility to change both trim level and engine type on the fly during manufacturing. When a customer wants to upgrade their trim, the system just calls car.setTrimLevel(new LuxuryTrim())—no need to create a new Car object. The car keeps its identity and all its other information intact throughout the whole manufacturing process. This design is way more maintainable and extensible, and it follows SOLID principles, especially the Open/Closed Principle, since you can add new trim levels or engine types without touching any existing code.
 
 Question 4. (30 pts.)
 
@@ -512,24 +479,15 @@ public class Main {
 
 * Why is Device defined as an abstract class? 
 
-Device is defined as an abstract class because it provides common functionality (id, location, heartbeat, connection status) that all smart campus devices share, 
-while requiring each concrete device to implement its own specific getStatus() method. 
-This follows the template method pattern where common behavior is defined in the abstract class, 
-but specific behavior is left to subclasses.
+Device is defined as an abstract class because it provides the common functionality that all smart campus devices need—things like id, location, heartbeat, and connection status—while still requiring each concrete device to implement its own specific getStatus() method. This follows the template method pattern where you define the shared behavior in the abstract class but leave the device-specific details to the subclasses.Retry
 
 * How do the Networked and BatteryPowered interfaces add behavior to your concrete classes?
 
-The Networked and BatteryPowered interfaces add specific capabilities to devices through interface implementation. 
-Networked devices can connect/disconnect and report connection status, while BatteryPowered devices can manage battery levels. 
-This allows for flexible composition where devices can have different combinations of capabilities (DoorLock and Camera have both, 
-Thermostat only has Networked).
+The Networked and BatteryPowered interfaces add specific capabilities to devices by letting them implement whichever interfaces they actually need. Networked devices can connect, disconnect, and report their connection status, while BatteryPowered devices can track and manage their battery levels. This gives you flexible composition where different devices can mix and match capabilities—DoorLock and Camera have both, but Thermostat only needs Networked since it's plugged into the wall.
 
 * Is this design an example of multiple inheritance in Java? Explain why or why not.
 
-No, this is not multiple inheritance. Java only supports single inheritance for classes (Device is the only parent class), 
-but it supports multiple interface implementation. The concrete classes extend one abstract class (Device) 
-and implement multiple interfaces (Networked, BatteryPowered). This is interface-based composition, not multiple inheritance, 
-which allows for flexible behavior without the complexity of true multiple inheritance.
+No, this is not multiple inheritance. Java only lets you extend one class at a time (Device is the only parent class here), but you can implement as many interfaces as you want. The concrete classes extend one abstract class (Device) and then implement multiple interfaces (Networked, BatteryPowered). This is interface-based composition, not multiple inheritance, which gives you flexible behavior without all the messy complications that come with true multiple inheritance.
 
 
 Grading (30 pts)
