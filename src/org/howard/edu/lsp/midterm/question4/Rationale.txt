@@ -1,11 +1,13 @@
 Question 4 Rationale:
-Smart Campus Device System - Inheritance and Interface Implementation Analysis
 
-1. Why is Device defined as an abstract class?
-Device is defined as an abstract class because it provides common functionality (id, location, heartbeat, connection status) that all smart campus devices share, while requiring each concrete device to implement its own specific getStatus() method. This follows the template method pattern where common behavior is defined in the abstract class, but specific behavior is left to subclasses.
+* Why is Device defined as an abstract class? 
 
-2. How do the Networked and BatteryPowered interfaces add behavior to your concrete classes?
-The Networked and BatteryPowered interfaces add specific capabilities to devices through interface implementation. Networked devices can connect/disconnect and report connection status, while BatteryPowered devices can manage battery levels. This allows for flexible composition where devices can have different combinations of capabilities (DoorLock and Camera have both, Thermostat only has Networked).
+Device is defined as an abstract class because it provides the common functionality that all smart campus devices need—things like id, location, heartbeat, and connection status—while still requiring each concrete device to implement its own specific getStatus() method. This follows the template method pattern where you define the shared behavior in the abstract class but leave the device-specific details to the subclasses.Retry
 
-3. Is this design an example of multiple inheritance in Java? Explain why or why not.
-No, this is not multiple inheritance. Java only supports single inheritance for classes (Device is the only parent class), but it supports multiple interface implementation. The concrete classes extend one abstract class (Device) and implement multiple interfaces (Networked, BatteryPowered). This is interface-based composition, not multiple inheritance, which allows for flexible behavior without the complexity of true multiple inheritance.
+* How do the Networked and BatteryPowered interfaces add behavior to your concrete classes?
+
+The Networked and BatteryPowered interfaces add specific capabilities to devices by letting them implement whichever interfaces they actually need. Networked devices can connect, disconnect, and report their connection status, while BatteryPowered devices can track and manage their battery levels. This gives you flexible composition where different devices can mix and match capabilities—DoorLock and Camera have both, but Thermostat only needs Networked since it's plugged into the wall.
+
+* Is this design an example of multiple inheritance in Java? Explain why or why not.
+
+No, this is not multiple inheritance. Java only lets you extend one class at a time (Device is the only parent class here), but you can implement as many interfaces as you want. The concrete classes extend one abstract class (Device) and then implement multiple interfaces (Networked, BatteryPowered). This is interface-based composition, not multiple inheritance, which gives you flexible behavior without all the messy complications that come with true multiple inheritance.
