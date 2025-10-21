@@ -225,16 +225,44 @@ Task:
 a) Explain in detail why the current structure does or does not support this. (10 pts.)
 
 The current structure does not support dynamic trim-level changes during the manufacturing process.
-This design uses class inheritance to represent trim levels (Base, Sports, Luxury), which locks in the trim level at compile-time when you create a car object as a specific subclass (like new Sports() or new Luxury()). Once you've created a car as a particular trim class, that's it—its type is fixed and can't be changed at runtime. If a customer decides mid-manufacturing that they want to upgrade from Base to Luxury, the system would have to create a completely new Luxury object and copy over all the information from the old Base object. This is messy, error-prone, and completely defeats the point of tracking one vehicle through its entire manufacturing journey.
+This design uses class inheritance to represent trim levels (Base, Sports, Luxury), which locks in the trim
+level at compile-time when you create a car object as a specific subclass (like new Sports() or new Luxury()).
+Once you've created a car as a particular trim class, that's it—its type is fixed and can't be changed at runtime.
+If a customer decides mid-manufacturing that they want to upgrade from Base to Luxury, 
+the system would have to create a completely new Luxury object and copy over all the information from the old Base object.
+This is messy, error-prone, and completely defeats the point of tracking one vehicle through its entire manufacturing journey.
 
-The inheritance hierarchy makes things even more rigid. The trim level is baked into the class identity itself through the "is-a" relationship—a Base car "is-a" Car, and it will always be a Base car. Java doesn't let you change an object's class at runtime, so there's no way to turn a Base instance into a Sports or Luxury instance without creating a whole new object. This breaks the basic principle that you should be able to change behavior without changing identity.
-Even worse, if the system needs to handle engine type changes too (Electric vs Petrol), the parallel inheritance hierarchies would explode into a nightmare. You'd need separate classes for every possible combination—BaseElectric, BasePetrol, SportsElectric, SportsPetrol, LuxuryElectric, LuxuryPetrol—making the design impossible to maintain and violating the Open/Closed Principle.
+The inheritance hierarchy makes things even more rigid. The trim level is baked into the class identity
+itself through the "is-a" relationship—a Base car "is-a" Car, and it will always be a Base car. 
+Java doesn't let you change an object's class at runtime, so there's no way to turn a Base instance 
+into a Sports or Luxury instance without creating a whole new object. This breaks the basic principle 
+that you should be able to change behavior without changing identity.
+Even worse, if the system needs to handle engine type changes too (Electric vs Petrol), 
+the parallel inheritance hierarchies would explode into a nightmare. You'd need
+separate classes for every possible combination—BaseElectric, BasePetrol, SportsElectric, 
+SportsPetrol, LuxuryElectric, LuxuryPetrol—making the design impossible to maintain and violating the Open/Closed Principle.
 
 b) Describe how to refactor the structure to allow trim-level change for a car to dynamically change.  Hint: How would you modify Car to use composition to solve the problem? (10 pts.)
 
-To refactor this structure and support dynamic trim-level changes, I would replace the inheritance-based approach with a composition-based design using the Strategy pattern. Instead of making Base, Sports, and Luxury subclasses of Car, I'd create a TrimLevel interface (or abstract class) that defines what trim levels can do—things like getFeatures(), getPrice(), and other trim-specific operations. Then I'd make concrete implementations: BaseTrim, SportsTrim, and LuxuryTrim. The Car class would have a private TrimLevel instance variable (like private TrimLevel trimLevel;) and a setter method setTrimLevel(TrimLevel newTrim) that lets you swap out the trim level whenever you want at runtime.
+To refactor this structure and support dynamic trim-level changes, I would replace the inheritance-based approach 
+with a composition-based design using the Strategy pattern. Instead of making Base, Sports, and Luxury subclasses 
+of Car, I'd create a TrimLevel interface (or abstract class) that defines what trim levels can 
+do—things like getFeatures(), getPrice(), and other trim-specific operations. Then I'd make concrete 
+implementations: BaseTrim, SportsTrim, and LuxuryTrim. The Car class would have a private TrimLevel 
+instance variable (like private TrimLevel trimLevel;) and a setter method setTrimLevel(TrimLevel newTrim) 
+that lets you swap out the trim level whenever you want at runtime.
 
-I'd do the same thing for engine types. Create an Engine interface with concrete implementations like ElectricEngine and PetrolEngine, and give the Car class a private Engine instance variable with its own setter method. The Car class would then hand off trim-specific and engine-specific behavior to these composed objects. For example, if you call getTrimLevel() on a Car, it might just return trimLevel.getName(), and any engine-related methods would delegate to the engine object. This composition approach follows the classic principle of "favor composition over inheritance" and gives you the flexibility to change both trim level and engine type on the fly during manufacturing. When a customer wants to upgrade their trim, the system just calls car.setTrimLevel(new LuxuryTrim())—no need to create a new Car object. The car keeps its identity and all its other information intact throughout the whole manufacturing process. This design is way more maintainable and extensible, and it follows SOLID principles, especially the Open/Closed Principle, since you can add new trim levels or engine types without touching any existing code.
+I'd do the same thing for engine types. Create an Engine interface with concrete implementations 
+like ElectricEngine and PetrolEngine, and give the Car class a private Engine instance variable with its 
+own setter method. The Car class would then hand off trim-specific and engine-specific behavior to these 
+composed objects. For example, if you call getTrimLevel() on a Car, it might just return trimLevel.getName(),
+and any engine-related methods would delegate to the engine object. This composition approach follows the 
+classic principle of "favor composition over inheritance" and gives you the flexibility to change both trim
+level and engine type on the fly during manufacturing. When a customer wants to upgrade their trim, 
+the system just calls car.setTrimLevel(new LuxuryTrim())—no need to create a new Car object. The
+car keeps its identity and all its other information intact throughout the whole manufacturing process. 
+This design is way more maintainable and extensible, and it follows SOLID principles, especially 
+the Open/Closed Principle, since you can add new trim levels or engine types without touching any existing code.
 
 Question 4. (30 pts.)
 
@@ -495,15 +523,28 @@ public class Main {
 
 * Why is Device defined as an abstract class? 
 
-Device is defined as an abstract class because it provides the common functionality that all smart campus devices need—things like id, location, heartbeat, and connection status—while still requiring each concrete device to implement its own specific getStatus() method. This follows the template method pattern where you define the shared behavior in the abstract class but leave the device-specific details to the subclasses.Retry
+Device is defined as an abstract class because it provides the common
+functionality that all smart campus devices need—things like id, location, 
+heartbeat, and connection status—while still requiring each concrete device 
+to implement its own specific getStatus() method. This follows the template 
+method pattern where you define the shared behavior in the abstract class but 
+leave the device-specific details to the subclasses.Retry
 
 * How do the Networked and BatteryPowered interfaces add behavior to your concrete classes?
 
-The Networked and BatteryPowered interfaces add specific capabilities to devices by letting them implement whichever interfaces they actually need. Networked devices can connect, disconnect, and report their connection status, while BatteryPowered devices can track and manage their battery levels. This gives you flexible composition where different devices can mix and match capabilities—DoorLock and Camera have both, but Thermostat only needs Networked since it's plugged into the wall.
+The Networked and BatteryPowered interfaces add specific capabilities to 
+devices by letting them implement whichever interfaces they actually need.
+Networked devices can connect, disconnect, and report their connection status, 
+while BatteryPowered devices can track and manage their battery levels. 
+This gives you flexible composition where different devices can mix and match capabilities—DoorLock and Camera have both, but Thermostat only needs Networked since it's plugged into the wall.
 
 * Is this design an example of multiple inheritance in Java? Explain why or why not.
 
-No, this is not multiple inheritance. Java only lets you extend one class at a time (Device is the only parent class here), but you can implement as many interfaces as you want. The concrete classes extend one abstract class (Device) and then implement multiple interfaces (Networked, BatteryPowered). This is interface-based composition, not multiple inheritance, which gives you flexible behavior without all the messy complications that come with true multiple inheritance.
+No, this is not multiple inheritance. Java only lets you extend one class 
+at a time (Device is the only parent class here), but you can implement as
+many interfaces as you want. The concrete classes extend one abstract class
+(Device) and then implement multiple interfaces (Networked, BatteryPowered).
+This is interface-based composition, not multiple inheritance, which gives you flexible behavior without all the messy complications that come with true multiple inheritance.
 
 
 Grading (30 pts)
