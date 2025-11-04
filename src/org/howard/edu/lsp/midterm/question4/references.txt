@@ -1,0 +1,100 @@
+================================================================================
+INTERNET RESOURCES CONSULTED:
+================================================================================
+
+1. Java Documentation - Abstract Classes
+   URL: https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html
+   Date Accessed: October 20, 2025
+
+2. Java Documentation - Interfaces
+   URL: https://docs.oracle.com/javase/tutorial/java/IandI/createinterface.html
+   Date Accessed: October 20, 2025
+
+3. Java Documentation - Implementing Multiple Interfaces
+   URL: https://docs.oracle.com/javase/tutorial/java/IandI/usinginterface.html
+   Date Accessed: October 20, 2025
+
+4. Java Documentation - Protected Access Modifier
+   URL: https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html
+   Date Accessed: October 20, 2025
+
+5. Java Documentation - System.currentTimeMillis()
+   URL: https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#currentTimeMillis--
+   Date Accessed: October 20, 2025
+
+6. Java Documentation - instanceof Operator
+   URL: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op2.html
+   Date Accessed: October 20, 2025
+
+7. Stack Overflow - Calling Super Constructor
+   URL: https://stackoverflow.com/questions/1168345/why-do-i-have-to-call-super-in-constructor
+   Date Accessed: October 20, 2025
+
+8. Refactoring Guru - Strategy Pattern
+   URL: https://refactoring.guru/design-patterns/strategy
+   Date Accessed: October 20, 2025
+
+================================================================================
+AI-GENERATED CONTENT - FULL TRANSCRIPT:
+================================================================================
+
+Me: "For the smart campus device system, how do I properly implement 
+multiple interfaces? My DoorLock needs to implement both Networked and 
+BatteryPowered."
+
+AI: "In Java, you can implement multiple interfaces by separating them with 
+commas: 'public class DoorLock extends Device implements Networked, 
+BatteryPowered'. Make sure to implement all methods from both interfaces and 
+call super(id, location) in your constructor."
+
+Me: "Can you help me understand why Device should be abstract rather than 
+a concrete class?"
+
+AI: "Device is abstract because it provides common functionality (id, location, 
+heartbeat) that all devices share, but each device type needs its own specific 
+getStatus() implementation. This follows the template method pattern where 
+common behavior is defined in the abstract class, but specific behavior is left 
+to subclasses."
+
+Me: "For the Thermostat class, do I need to implement the BatteryPowered 
+interface or just Networked?"
+
+AI: "Looking at the requirements, Thermostat only implements Networked, not 
+BatteryPowered. Only DoorLock and Camera implement BatteryPowered. Thermostat 
+just needs the temperature field and Networked methods."
+
+Me: "Can you help me understand the difference between multiple inheritance 
+and multiple interface implementation in Java?"
+
+AI: "Java doesn't support multiple inheritance for classes (you can only extend 
+one class), but you can implement multiple interfaces. This is interface-based 
+composition, not multiple inheritance. Multiple inheritance would mean extending 
+multiple classes, which Java doesn't allow."
+
+Me: "How should I implement the connect() method in the Networked interface? 
+Should it directly modify the connected field?"
+
+AI: "The Device class provides a protected setConnected(boolean) method. Your 
+concrete classes should use this method: setConnected(true) for connect() and 
+setConnected(false) for disconnect(). This maintains encapsulation."
+
+Me: "What should the getStatus() method return for each device?"
+
+AI: "Each device's getStatus() should return a formatted string including the 
+device type, id, location, connection status, and device-specific info. For 
+example, DoorLock should include battery percentage: 'DoorLock[id=..., loc=..., 
+conn=..., batt=...]'. Match the exact format specified in the exam."
+
+Me: "Should the setBatteryPercent validation happen in the interface or in 
+each implementing class?"
+
+AI: "The validation happens in each implementing class's setBatteryPercent() 
+method. Check if percent < 0 or percent > 100, then throw 
+IllegalArgumentException with message 'battery 0..100'."
+
+Me: "Why do we need to call setBatteryPercent() in the constructor instead 
+of directly assigning this.batteryPercent = initialBattery?"
+
+AI: "Calling setBatteryPercent(initialBattery) in the constructor ensures that 
+the validation logic is applied even during object construction. This prevents 
+creating devices with invalid battery levels."
